@@ -1,0 +1,63 @@
+
+Test case 1 : 
+cycle:         14
+PC:        152
+$t0:          4 The correct value is 4
+$t1:          8 The correct value is 8
+$t2:         12 The correct value is 12
+$t3:         16 The correct value is 16
+$t4:         20 The correct value is 20
+$t5:         24 The correct value is 24
+$t6:         28 The correct value is 28
+$t7:         32 The correct value is 32
+
+
+Test case 2 :
+cycle:         12
+PC:        244
+$s1:          5 The correct value is 5
+$s2:         10 The correct value is 10
+$s3:          3 The correct value is 3
+$s4:          2 The correct value is 2
+$s5:         15 The correct value is 15
+$s6: 4294967294 The correct value is -2  *** Check representation
+
+
+ Test case 3 :
+cycle:         12
+PC:        344
+$s1:         15 The correct value is 15
+$s2:         10 The correct value is 10
+$s3:          3 The correct value is 3
+$s4:          2 The correct value is 2
+$s5:         10 The correct value is 10
+$s6:         11 The correct value is 11
+
+
+ Test case 4:
+cycle:         13
+PC:        444
+$s1:          0 The correct value is 0
+$s2:         10 The correct value is 10
+$s3:         15 The correct value is 15
+
+
+ Test case 5:
+cycle:         16
+PC:        560
+$s1:         30 The correct value is 30
+$s2:         20 The correct value is 20
+$s3:          6 The correct value is 6
+
+
+
+Test case 6:
+
+cycle:         11
+PC:        640
+$s1:         15 The correct value is 15
+$s2:         10 The correct value is 10
+$s3:          3 The correct value is 3
+$s4:         25 The correct value is 25
+$s5:         28 The correct value is 28
+
