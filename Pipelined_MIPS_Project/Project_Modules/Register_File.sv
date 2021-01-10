@@ -44,7 +44,7 @@ module registerFile(rData1, rData2, rData3_tmp, rDataF1, rDataF2, readdata_doubl
 	 rData1 = registers_i[rReg1] ; 
      rData2 = registers_i[rReg2] ; 
      rData3_tmp = registers_i[rRegF1] ; 
-    if ( opcode == 6'h31 || opcode == 6'h39)
+	  if ( opcode == 6'h31 || opcode == 6'h39 || opcode == 6'h35 || opcode == 6'h3d)
       begin
          rDataF1 = registers_f[rReg1] ;
         readdata_double1 = registers_f[rReg1+1] ;
