@@ -1,0 +1,67 @@
+Test case 7 -> branch taken, control hazards, flush
+
+code : 
+
+module tst_7; 
+	reg [31:0]PC_VALUE_;		  
+	reg [31:0] cycle;
+	Top top(PC_VALUE_);
+	initial begin
+      
+		PC_VALUE_ <= 0;	  
+		cycle <= 1;
+	end				   
+	always @(posedge top.clk) begin	
+      
+      if (cycle== 10)	
+begin
+  
+		$display("cycle: %d" , cycle);
+		$display("PC: %d",top.program_counter);				   
+  $display("$t0: %d" , top.regFile.registers_i[8], " The correct value is 0");
+  $display("$t1: %d" , top.regFile.registers_i[9], " The correct value is 4");		
+  $display("$t2: %d" , top.regFile.registers_i[10], " The correct value is 5");	
+		
+		$finish;
+		end
+		cycle = cycle + 1;
+	end
+endmodule
+
+
+
+
+InsMemory input : 
+
+ mem[0] <= 8'b00010101; // beq $t1, $t1, 2
+      mem[1] <= 8'b00101001;
+      mem[2] <= 8'b00000000;
+      mem[3] <= 8'b00000001;
+
+      mem[4] <= 8'b00100100;// addi $t0,zero,3
+      mem[5] <= 8'b00001000;
+      mem[6] <= 8'b00000000;
+      mem[7] <= 8'b00000011;
+
+      mem[8]  <= 8'b00100100; // addi $t1,$zero,4
+      mem[9]  <= 8'b00001001;
+      mem[10] <= 8'b00000000;
+      mem[11] <= 8'b00000100;
+
+      mem[12] <= 8'b00100100; // addi $t2,$zero,5
+      mem[13] <= 8'b00001010;
+      mem[14] <= 8'b00000000;
+      mem[15] <= 8'b00000101;
+
+
+
+
+TEST OUTPUT 
+
+cycle:         10
+PC:         32
+$t0:          0 The correct value is 0
+$t1:          4 The correct value is 4
+$t2:          5 The correct value is 5
+
+
