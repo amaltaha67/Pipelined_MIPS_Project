@@ -1,0 +1,66 @@
+Test case 9 -> lw Data Hazard , mem_to_alu forwarding
+
+code :
+
+module tst_9; 
+	reg [31:0]PC_VALUE_;		  
+	reg [31:0] cycle;
+	Top top(PC_VALUE_);
+	initial begin      
+		PC_VALUE_ <= 800;	  
+		cycle <= 1;
+	end				   
+	always @(posedge top.clk) begin	
+      if (cycle== 9)	
+begin
+   $display("PC: %d",top.program_counter);	
+   $display("cycle: %d" , cycle);
+			
+  $display("$t0: %d" , top.regFile.registers_i[8], " The correct value is 0");
+  $display("$t1: %d" , top.regFile.registers_i[9], " The correct value is 0");		
+  $display("$t2: %d" , top.regFile.registers_i[10], " The correct value is 5");		
+  $display("$t3: %d" , top.regFile.registers_i[11], " The correct value is 10");
+  $display("$t4: %d" , top.regFile.registers_i[12], " The correct value is 20");	
+  $display("$t5: %d" , top.regFile.registers_i[13], " The correct value is 25");
+		
+		$finish;
+		end
+		cycle = cycle + 1;
+	end
+endmodule
+
+InsMemory input: 
+      // addi $t2 $0 5
+            mem[800] <= 8'b00100100;
+            mem[801] <= 8'b00001010;
+            mem[802] <= 8'b00000000;
+            mem[803] <= 8'b00000101;
+
+            // addi $t3 $0 10
+            mem[804] <= 8'b00100100;
+            mem[805] <= 8'b00001011;
+            mem[806] <= 8'b00000000;
+            mem[807] <= 8'b00001010;
+
+            // lw $t4 16($0)
+            mem[808] <= 8'b01001000;
+            mem[809] <= 8'b00001100;
+            mem[810] <= 8'b00000000;
+            mem[811] <= 8'b00010000;
+
+            // add $t5 $t2 $t4 
+            mem[812] <= 8'b00001101;
+            mem[813] <= 8'b01001100;
+            mem[814] <= 8'b01101000;
+            mem[815] <= 8'b00100000;
+
+TEST OUTPUT 
+
+PC:        828
+cycle:          9
+$t0:          0 The correct value is 0
+$t1:          0 The correct value is 0
+$t2:          5 The correct value is 5
+$t3:         10 The correct value is 10
+$t4:         20 The correct value is 20
+$t5:         25 The correct value is 25

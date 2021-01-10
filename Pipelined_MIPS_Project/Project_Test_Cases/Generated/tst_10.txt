@@ -1,0 +1,63 @@
+Test case 10 -> lw Data Hazard , mem_to_alu forwarding , division
+
+code : 
+
+module tst_10; 
+	reg [31:0]PC_VALUE_;		  
+	reg [31:0] cycle;
+	Top top(PC_VALUE_);
+	initial begin
+		PC_VALUE_ <= 900;	  
+		cycle <= 1;
+	end				   
+	always @(posedge top.clk) begin	
+     
+      if (cycle== 9)	
+begin
+   $display("PC: %d",top.program_counter);	
+		$display("cycle: %d" , cycle);
+					   
+  $display("$s1: %d" , top.regFile.registers_i[8], " The correct value is 4");
+  $display("$s2: %d" , top.regFile.registers_i[9], " The correct value is 8");		
+  $display("$s3: %d" , top.regFile.registers_i[10], " The correct value is 2");
+		
+		$finish;
+		end
+		cycle = cycle + 1;
+	end
+endmodule
+
+
+InsMemory input: 
+
+     //lw $t0,0($0)
+      mem[900] <= 8'b01001000;
+      mem[901] <= 8'b00001000;
+      mem[902] <= 8'b00000000;
+      mem[903] <= 8'b00000000;
+			
+      //lw $t1,4($0)
+      mem[904] <= 8'b01001000;
+      mem[905] <= 8'b00001001;
+      mem[906] <= 8'b00000000;
+      mem[907] <= 8'b00000100;
+      
+      //div $t1,$t0
+      mem[908] <= 8'b00001101; 
+      mem[909] <= 8'b00101000;
+      mem[910] <= 8'b00000000;
+      mem[911] <= 8'b00011010;
+	
+      //mflo $t2
+      mem[912] <= 8'b00001100; 
+      mem[913] <= 8'b00000000;
+      mem[914] <= 8'b01010000;
+      mem[915] <= 8'b00010010;
+
+TEST OUTPUT 
+
+PC:        928
+cycle:          9
+$t0:          4 The correct value is 4
+$t1:          8 The correct value is 8
+$t2:          2 The correct value is 2

@@ -1,0 +1,58 @@
+Test case 17 -> jr jump to location 0 and do beq 
+
+code: 
+
+module tst_17; 
+	reg [31:0]PC_VALUE_;		  
+	reg [31:0] cycle;
+	Top top(PC_VALUE_);
+	initial begin
+
+		PC_VALUE_ <= 1000;	  
+		cycle <= 1;
+	end				   
+	always @(posedge top.clk) begin	
+     
+      if (cycle== 11)	
+begin
+   $display("PC: %d",top.program_counter);	
+		$display("cycle: %d" , cycle);
+					   
+  $display("$t0: %d" , top.regFile.registers_i[8], " The correct value is 0");
+  $display("$t1: %d" , top.regFile.registers_i[9], " The correct value is 4");		
+  $display("$t2: %d" , top.regFile.registers_i[10], " The correct value is 5");	
+		
+		$finish;
+		end
+		cycle = cycle + 1;
+	end
+endmodule
+
+InsMemory input: 
+
+      mem[1000] <= 8'b00001100; 	// jr t5
+      mem[1001] <= 8'b00011001;
+      mem[1002] <= 8'b00000000;
+      mem[1003] <= 8'b00001000;
+
+      mem[1004] <= 8'b00100100;  	// addi $t0,zero,3
+      mem[1005] <= 8'b00001000;
+      mem[1006] <= 8'b00000000;
+      mem[1007] <= 8'b00000011;
+
+      mem[1008] <= 8'b00100100; 	// addi $t0,zero,4
+      mem[1008] <= 8'b00001000;
+      mem[1010] <= 8'b00000000;
+      mem[1011] <= 8'b00000100;
+
+    Note: location zero is specified in test case 7 in this report 
+
+TEST OUTPUT 
+
+
+PC:         28
+cycle:         11
+$t0:          0 The correct value is 0
+$t1:          4 The correct value is 4
+$t2:          5 The correct value is 5
+

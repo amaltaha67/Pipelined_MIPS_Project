@@ -1,0 +1,49 @@
+Test case 12 -> add.s 
+
+code : 
+
+module tst_12; 
+	reg [31:0]PC_VALUE_;		  
+	reg [31:0] cycle;
+	Top top(PC_VALUE_);
+	initial begin
+      
+		PC_VALUE_ <= 1200;	  
+		cycle <= 1;
+	end				   
+	always @(posedge top.clk) begin	
+     
+      if (cycle== 5)	
+begin
+   $display("PC: %d",top.program_counter);	
+		$display("cycle: %d" , cycle);
+					   
+  $display("$f0: %b" , top.regFile.registers_f[0]);
+  $display("$f1: %b" , top.regFile.registers_f[1]);		
+  $display("$f2: %b" , top.regFile.registers_f[2]);		
+  $display("$f3: %b" , top.regFile.registers_f[3]);
+		
+		$finish;
+		end
+		cycle = cycle + 1;
+	end
+endmodule
+
+InsMemory input: 
+
+      mem[1200] <= 8'b01000110; // add.s	f3,f2,f1
+      mem[1201] <= 8'b00000001;
+      mem[1202] <= 8'b00010000;
+      mem[1203] <= 8'b11000000; 
+
+TEST OUTPUT 
+
+
+
+PC:       1216
+cycle:          5
+$f0: 00000001000000000000000000000000 
+$f1: 10000001110000000000000000000000 
+$f2: 10000011101100000000000000000000 
+$f3: 10000011101111000000000000000000 
+

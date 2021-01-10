@@ -1,0 +1,57 @@
+Test case 16 -> Alu_to_Alu Forwarding, mem_to_alu Forwarding, sra (shift right arithmetic) , srl 
+
+code : 
+
+module tst_16; 
+	reg [31:0]PC_VALUE_;		  
+	reg [31:0] cycle;
+	Top top(PC_VALUE_);
+	initial begin
+
+		PC_VALUE_ <= 1700;	  
+		cycle <= 1;
+	end				   
+	always @(posedge top.clk) begin	
+     
+      if (cycle== 9)	
+begin
+   $display("PC: %d",top.program_counter);	
+		$display("cycle: %d" , cycle);
+					   
+  $display("$t0: %h" , top.regFile.registers_i[8], " The correct value is 0");
+  $display("$t1: %h" , top.regFile.registers_i[9], " The correct value is -3");		
+  $display("$t2: %h" , top.regFile.registers_i[10], " The correct value is -5");		
+  $display("$t3: %h" , top.regFile.registers_i[11], " The correct value is 2147483645");
+		
+		$finish;
+		end
+		cycle = cycle + 1;
+	end
+endmodule
+
+InsMemory input: 
+
+     mem[1700] <= 8'b00100100; // addi $t2,$zero,-5
+      mem[1701] <= 8'b00001010;
+      mem[1702] <= 8'b11111111;
+      mem[1703] <= 8'b11111011;
+      
+      mem[1704] <= 8'b00001100; // sra $t1,$t2,1
+      mem[1705] <= 8'b00001010;
+      mem[1706] <= 8'b01001000;
+      mem[1707] <= 8'b01000011;
+      
+      mem[1708] <= 8'b00001100; // srl $t3,$t2,1
+      mem[1709] <= 8'b00001010;
+      mem[1710] <= 8'b01011000;
+      mem[1711] <= 8'b01000010;
+
+TEST OUTPUT 
+
+
+PC:       1732
+cycle:          9
+$t0: 00000000 The correct value is 0
+$t1: fffffffd The correct value is -3
+$t2: fffffffb The correct value is -5
+$t3: 7ffffffd The correct value is 2147483645

@@ -1,0 +1,35 @@
+
+Test case 15 -> c.le.s compare less than or equal single
+
+module tst_15; 
+	reg [31:0]PC_VALUE_;		  
+	reg [31:0] cycle;
+	Top top(PC_VALUE_);
+	initial begin
+      
+		PC_VALUE_ <= 1600;	  
+		cycle <= 1;
+	end				   
+	always @(posedge top.clk) begin	
+     
+      if (cycle== 5)	
+begin
+   $display("PC: %d",top.program_counter);	
+		$display("cycle: %d" , cycle);
+					   
+		$finish;
+		end
+		cycle = cycle + 1;
+	end
+endmodule
+
+InsMemory input: 
+
+      mem[1600] <= 8'b01000110;  // c.le.s 
+      mem[1601] <= 8'b00000100;
+      mem[1602] <= 8'b00000000;
+      mem[1603] <= 8'b11100011;
+
+TEST OUTPUT 
+
+https://imgur.com/a/NIYoHY0

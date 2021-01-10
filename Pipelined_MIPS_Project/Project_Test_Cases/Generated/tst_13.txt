@@ -1,0 +1,44 @@
+Test case 13 -> lui 
+
+code : 
+
+module tst_13; 
+	reg [31:0]PC_VALUE_;		  
+	reg [31:0] cycle;
+	Top top(PC_VALUE_);
+	initial begin
+      
+		PC_VALUE_ <= 1400;	  
+		cycle <= 1;
+	end				   
+	always @(posedge top.clk) begin	
+     
+      if (cycle== 5)	
+begin
+   $display("PC: %d",top.program_counter);	
+		$display("cycle: %d" , cycle);
+					   
+  $display("$t0: %d" , top.regFile.registers_i[8], " The correct value is 0");
+  $display("$t1: %d" , top.regFile.registers_i[9], " The correct value is 196608");			
+		$finish;
+		end
+		cycle = cycle + 1;
+	end
+endmodule
+
+InsMemory input: 
+
+ 
+   mem[1400] <= 8'b00111100;  // lui $t1 3
+      mem[1401] <= 8'b00001001;
+      mem[1402] <= 8'b00000000;
+      mem[1403] <= 8'b00000011; 
+
+
+TEST OUTPUT 
+
+PC:       1416
+cycle:          5
+$t0:          0 The correct value is 0
+$t1:     196608 The correct value is 196608
+

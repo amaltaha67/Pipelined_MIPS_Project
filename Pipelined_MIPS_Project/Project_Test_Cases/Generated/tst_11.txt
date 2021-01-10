@@ -1,0 +1,61 @@
+Test case 11 -> jump, control hazards
+
+code : 
+
+module tst_11; 
+	reg [31:0]PC_VALUE_;		  
+	reg [31:0] cycle;
+	Top top(PC_VALUE_);
+	initial begin
+     
+		PC_VALUE_ <= 1100;	  
+		cycle <= 1;
+	end				   
+	always @(posedge top.clk) begin	
+     
+      if (cycle== 9)	
+begin
+   $display("PC: %d",top.program_counter);	
+		$display("cycle: %d" , cycle);
+					   
+  $display("$t0: %d" , top.regFile.registers_i[8], " The correct value is 0");
+  $display("$t1: %d" , top.regFile.registers_i[9], " The correct value is 0");	
+  $display("$t2: %d" , top.regFile.registers_i[10], " The correct value is 5");	
+		
+		$finish;
+		end
+		cycle = cycle + 1;
+	end
+endmodule
+
+InsMemory input: 
+
+      mem[1100] <= 8'b00001000; // j 3
+      mem[1101] <= 8'b00000000;
+      mem[1102] <= 8'b00000000;
+      mem[1103] <= 8'b00000011;
+
+      mem[1104] <= 8'b00100100; // addi $t0,$zero,3
+      mem[1105] <= 8'b00001000;
+      mem[1106] <= 8'b00000000;
+      mem[1107] <= 8'b00000011;
+
+      mem[1108] <= 8'b00100100; // addi $t0,$zero,4
+      mem[1109] <= 8'b00001000;
+      mem[1110] <= 8'b00000000;
+      mem[1111] <= 8'b00000100;
+
+      mem[1112] <= 8'b00100100; // addi $t0,$zero,5
+      mem[1113] <= 8'b00001000;
+      mem[1114] <= 8'b00000000;
+      mem[1115] <= 8'b00000101;
+
+
+TEST OUTPUT 
+
+PC:         36
+cycle:          9
+$t0:          0 The correct value is 0
+$t1:          0 The correct value is 0
+$t2:          5 The correct value is 5
+
