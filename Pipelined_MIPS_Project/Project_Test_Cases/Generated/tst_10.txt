@@ -13,7 +13,7 @@ module tst_10;
 	always @(posedge top.clk) begin	
      
       if (cycle== 9)	
-begin
+	begin
    $display("PC: %d",top.program_counter);	
 		$display("cycle: %d" , cycle);
 					   
