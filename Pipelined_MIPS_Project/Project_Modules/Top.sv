@@ -92,7 +92,7 @@ module Top(PC_Val);
   Mux_2to1_32bit mx3(PC_OR_branch, and_br_eq,  branch_target, PC_plus4_F);
   
 
-  Mux_2to1_32bit mx4(jumpORjr, jump, {PC_plus4_D[31:28], Shift_i}, readdata1_D);
+  Mux_2to1_32bit mx4(jumpORjr, jump, {PC_plus4_D[31:28], Shift_i}, readdata2_D);
   
  
   
